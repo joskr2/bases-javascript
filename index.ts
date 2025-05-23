@@ -256,3 +256,25 @@ for (; miNumero !== 5 && !Number.isNaN(miNumero); ) {
   }
 }
 
+export function precioConDescuentoMensual(tarifaPorHora, totalDias, descuento) {
+  const DIAS_POR_MES = 22;
+  const HORAS_POR_DIA = 8;
+  const tarifaPorDia = tarifaPorHora * HORAS_POR_DIA;
+
+  // Calcula cuántos meses completos hay
+  const mesesCompletos = Math.floor(totalDias / DIAS_POR_MES);
+  // Calcula los días restantes fuera de los meses completos
+  const diasRestantes = totalDias % DIAS_POR_MES;
+
+  // Tarifa mensual sin descuento
+  const tarifaMensual = tarifaPorDia * DIAS_POR_MES;
+  // Tarifa mensual con descuento aplicado
+  const tarifaMensualConDescuento = tarifaMensual * (1 - descuento);
+
+  // Total a pagar: meses completos con descuento + días restantes sin descuento
+  const total =
+    mesesCompletos * tarifaMensualConDescuento + diasRestantes * tarifaPorDia;
+
+  // Redondea hacia arriba al número entero más cercano
+  return Math.ceil(total);
+}
