@@ -1,3 +1,5 @@
+import { convertToObject, JsxEmit } from "typescript";
+
 //JS
 let nombre = "Juan";
 
@@ -231,50 +233,233 @@ if (fruta === "manzana") {
 // i++ -> significa que aumenta de 1 en 1 , seria el equivalente a i = i + 1 O i += 1
 // let i = 0 -> seria el punto de partida
 // i < 10 -> es la condicion que eventualmente me permitira salir del bucle
-// i++ -> es como aumenta el punto de partida, es decir en este caso aumenta de 1 en 1 
+// i++ -> es como aumenta el punto de partida, es decir en este caso aumenta de 1 en 1
 // lo que va dentro de las {} , se llama cuerpo del for, y es el codigo que quiero repetir cierta cantidad de veces
-
 
 // let contador = 0;
 // for (let i = 0; i < 10; i++) {
 //   console.log("Hola mundo!!!" + i);
 // }
 
-
-
 // le pido un valor al usuario, con prompt
-let ingresaUnValor = prompt("Ingresa un valor") || "";
-let miNumero = Number(ingresaUnValor);
+// let ingresaUnValor = prompt("Ingresa un valor") || "";
+// let miNumero = Number(ingresaUnValor);
 
 //for con condición basada en la entrada del usuario
-for (; miNumero !== 5 && !Number.isNaN(miNumero); ) {
-  console.log("Hola mundo: " + miNumero);
-  ingresaUnValor = prompt("Ingresa un valor") || "";
-  miNumero = Number(ingresaUnValor);
-  if (miNumero === 5) {
-    break;
+// for (; miNumero !== 5 && !Number.isNaN(miNumero); ) {
+//   console.log("Hola mundo: " + miNumero);
+//   ingresaUnValor = prompt("Ingresa un valor") || "";
+//   miNumero = Number(ingresaUnValor);
+//   if (miNumero === 5) {
+//     break;
+//   }
+// }
+
+// export function precioConDescuentoMensual(tarifaPorHora, totalDias, descuento) {
+//   const DIAS_POR_MES = 22;
+//   const HORAS_POR_DIA = 8;
+//   const tarifaPorDia = tarifaPorHora * HORAS_POR_DIA;
+
+//   // Calcula cuántos meses completos hay
+//   const mesesCompletos = Math.floor(totalDias / DIAS_POR_MES);
+//   // Calcula los días restantes fuera de los meses completos
+//   const diasRestantes = totalDias % DIAS_POR_MES;
+
+//   // Tarifa mensual sin descuento
+//   const tarifaMensual = tarifaPorDia * DIAS_POR_MES;
+//   // Tarifa mensual con descuento aplicado
+//   const tarifaMensualConDescuento = tarifaMensual * (1 - descuento);
+
+//   // Total a pagar: meses completos con descuento + días restantes sin descuento
+//   const total =
+//     mesesCompletos * tarifaMensualConDescuento + diasRestantes * tarifaPorDia;
+
+//   // Redondea hacia arriba al número entero más cercano
+//   return Math.ceil(total);
+// }
+
+// for
+
+// for (let item = 0; item < 5; item++) {
+//   console.log(item);
+// }
+
+let misAmigos = ["Pedro", "Juan", "Beto", "Maria"];
+
+// for (let i = 0; i < misAmigos.length; i++) {
+//   let saludo = `Hola ${misAmigos[i]} , como estas?`;
+//   console.log(saludo);
+// }
+
+for (const amigo of misAmigos) {
+  let saludo = `Hola ${amigo} , como estas?`;
+  console.log(saludo);
+}
+
+// objetos
+// es una manera de alamacenar informacion
+
+// JSON -> Javascript object notation -> Es la manera de Javascipr de escribir objetos
+
+// key: value -> llave:valor , donde llave es un identidicador , tmb llamado propiedad
+// y value es el valor de esa propiedad
+
+let objeto = {
+  llave: "valor",
+  llave2: 1,
+  llave3: true,
+};
+
+let objetoAjson: string = JSON.stringify(objeto); // objeto de JS a JSON
+
+let JsonAobjeto = JSON.parse(objetoAjson); // JSON a objeto de JS
+
+console.log("---------------------------------------------------------");
+console.log(objetoAjson, "JSON");
+console.log("---------------------------------------------------------");
+
+console.log("---------------------------------------------------------");
+console.log(JsonAobjeto, "OBJETO");
+console.log("---------------------------------------------------------");
+
+// iterador -> basicamente es "algo" que se puede recorrer
+
+// un objeto , no es una coleccion de elementos
+// un string si es una coleccion de elementos(caracteres)
+
+let coleccionDeObjetos = [
+  {
+    llave: "objeto 1",
+    llave2: 1,
+    llave3: true,
+  },
+  {
+    llave: "objeto 2",
+    llave2: 2,
+    llave3: true,
+  },
+  {
+    llave: "objeto 3",
+    llave2: 3,
+    llave3: true,
+  },
+];
+
+for (const { llave, llave2 } of coleccionDeObjetos) {
+  let item = `${llave2}. ${llave}`;
+  console.log(item);
+}
+
+// 1, ejercicio
+
+// una interfaz sirve para definir como se ve mi valor, en este caso le digo que debera tres propeidades , cons sus respectivos tipos y se llamara Alumno
+interface Alumno {
+  id: number;
+  nombre: string;
+  notas: number[];
+}
+
+const alumno1 = {
+  id: 1,
+  nombre: "Pedro",
+  notas: [12, 15, 16, 18],
+};
+const alumno2 = {
+  id: 2,
+  nombre: "Maria",
+  notas: [12, 10, 18, 20],
+};
+const alumno3 = {
+  id: 3,
+  nombre: "Jose",
+  notas: [20, 20, 10, 5],
+};
+const alumno4 = {
+  id: 4,
+  nombre: "Raul",
+  notas: [12, 13, 14, 15],
+};
+
+const alumnos: Alumno[] = [alumno1, alumno2, alumno3, alumno4];
+
+// Vamos a hacer una funcion que me sirva para detectar la nota mas alta de un grupo de alumnos y felictarlo con un mensaje al alumno que obtuvo el promedio mayor
+
+// 1. vamos a recorrer a todos los alumnos y obtener su array de notas
+// 2. sumar las 4 notas de cada alumno
+// 3. sacar el promedio de notas de cada alumno ; como hacemos eso?: dividir la suma de notas entre la cantidad de notas
+// 4. queremos quedarnos siempre con el ultimo valor mas alto
+//5. asignar al objeto vacio alumno congratulado del cual proviene el promedio mas alto
+// entonces guardo ese alumno , para poder usarlo despues
+
+function felcitarAlumno(alumnos: Alumno[]): string {
+
+  let alumnoCongratulado: Alumno = {
+    id: 0,
+    nombre: "",
+    notas: [],
+  };
+
+  let promedioMayor = 0;
+
+  for (const alumno of alumnos) {
+    // console.log(alumno.notas);
+    let suma = 0;
+
+    // este for es solamente para recorrer las notas de cada alumno
+    for (const nota of alumno.notas) {
+      suma = suma + nota;
+    }
+
+    // console.log(suma);
+    let promedio = suma / alumno.notas.length;
+    // console.log(promedio);
+
+    if (promedio > promedioMayor) {
+      promedioMayor = promedio;
+      alumnoCongratulado = alumno;
+    }
   }
+  // console.log(alumnoCongratulado);
+
+  return `Felicitaciones ${alumnoCongratulado.nombre} tu promedio fue de ${promedioMayor}`;
 }
 
-export function precioConDescuentoMensual(tarifaPorHora, totalDias, descuento) {
-  const DIAS_POR_MES = 22;
-  const HORAS_POR_DIA = 8;
-  const tarifaPorDia = tarifaPorHora * HORAS_POR_DIA;
+const felicitacion = felcitarAlumno(alumnos);
 
-  // Calcula cuántos meses completos hay
-  const mesesCompletos = Math.floor(totalDias / DIAS_POR_MES);
-  // Calcula los días restantes fuera de los meses completos
-  const diasRestantes = totalDias % DIAS_POR_MES;
+console.log(felicitacion);
 
-  // Tarifa mensual sin descuento
-  const tarifaMensual = tarifaPorDia * DIAS_POR_MES;
-  // Tarifa mensual con descuento aplicado
-  const tarifaMensualConDescuento = tarifaMensual * (1 - descuento);
 
-  // Total a pagar: meses completos con descuento + días restantes sin descuento
-  const total =
-    mesesCompletos * tarifaMensualConDescuento + diasRestantes * tarifaPorDia;
+// la version JS
 
-  // Redondea hacia arriba al número entero más cercano
-  return Math.ceil(total);
+// @ts-ignore
+function felicitarAlumnoJS(alumnos) {
+  let alumnoCongratulado = {
+    id: 0,
+    nombre: "",
+    notas: [],
+  };
+
+  let promedioMayor = 0;
+
+  for (const alumno of alumnos) {
+    let suma = 0;
+
+    // este for es solamente para recorrer las notas de cada alumno
+    for (const nota of alumno.notas) {
+      suma = suma + nota;
+    }
+
+    let promedio = suma / alumno.notas.length;
+
+    if (promedio > promedioMayor) {
+      promedioMayor = promedio;
+      alumnoCongratulado = alumno;
+    }
+  }
+
+  return `Felicitaciones ${alumnoCongratulado.nombre} tu promedio fue de ${promedioMayor}`;
 }
+
+const felicitacionJS = felicitarAlumnoJS(alumnos);
+
+console.log(felicitacionJS);
