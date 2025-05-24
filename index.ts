@@ -1,3 +1,4 @@
+import { ArrayBufferSink } from "bun";
 import { convertToObject, JsxEmit } from "typescript";
 
 //JS
@@ -392,7 +393,6 @@ const alumnos: Alumno[] = [alumno1, alumno2, alumno3, alumno4];
 // entonces guardo ese alumno , para poder usarlo despues
 
 function felcitarAlumno(alumnos: Alumno[]): string {
-
   let alumnoCongratulado: Alumno = {
     id: 0,
     nombre: "",
@@ -402,24 +402,32 @@ function felcitarAlumno(alumnos: Alumno[]): string {
   let promedioMayor = 0;
 
   for (const alumno of alumnos) {
-    // console.log(alumno.notas);
+    console.log(alumno.notas);
     let suma = 0;
 
     // este for es solamente para recorrer las notas de cada alumno
+
+    // este for es equivalente al for each de abajo
     for (const nota of alumno.notas) {
       suma = suma + nota;
     }
 
-    // console.log(suma);
+    // este foreach es equivalente al for de arriba
+    // suma = suma + nota es igual que decir suma += nota
+    alumno.notas.forEach((nota) => (suma += nota));
+    // significa una funcionalidad (suma += nota, por cada elemento (nota) , de mi array/coleccion de elementos (alumno.notas)
+
+    console.log(suma);
     let promedio = suma / alumno.notas.length;
-    // console.log(promedio);
+    console.log(promedio);
 
     if (promedio > promedioMayor) {
       promedioMayor = promedio;
       alumnoCongratulado = alumno;
     }
   }
-  // console.log(alumnoCongratulado);
+
+  console.log(alumnoCongratulado);
 
   return `Felicitaciones ${alumnoCongratulado.nombre} tu promedio fue de ${promedioMayor}`;
 }
@@ -427,7 +435,6 @@ function felcitarAlumno(alumnos: Alumno[]): string {
 const felicitacion = felcitarAlumno(alumnos);
 
 console.log(felicitacion);
-
 
 // la version JS
 
@@ -463,3 +470,62 @@ function felicitarAlumnoJS(alumnos) {
 const felicitacionJS = felicitarAlumnoJS(alumnos);
 
 console.log(felicitacionJS);
+
+// Metodos especiales de los Array
+
+// for-each
+
+// aplica una fincionalidad en cada interacion(vuelta)
+
+const letras = ["j", "o", "s", "u", "e"];
+
+letras.forEach((letra) => console.log(letra.toLocaleUpperCase()));
+
+// ... -> spread operator , operador de esparcimiento,
+// me sirve para poner una cantidad varible(no se cuantos) de elementos,
+// y los pone dentro de un array
+const felicitarAlumno3 = (...alumnos: Alumno[]): string => {
+  let alumnoCongratulado: Alumno = {
+    id: 0,
+    nombre: "",
+    notas: [],
+  };
+
+  let promedioMayor = 0;
+
+  alumnos.forEach((alumno) => {
+    let suma = 0;
+    alumno.notas.forEach((nota) => (suma = suma + nota));
+    let promedio = suma / alumno.notas.length;
+    if (promedio > promedioMayor) {
+      promedioMayor = promedio;
+      alumnoCongratulado = alumno;
+    }
+  });
+
+  return `Felicitaciones ${alumnoCongratulado.nombre} tu promedio fue de ${promedioMayor}`;
+};
+
+const felicitacion3 = felicitarAlumno3(alumno1, alumno2, alumno3);
+
+console.log(felicitacion3);
+
+let nonbreSegundo = "patricio"; // los strings o textos , tambien son arrays
+
+if (nonbreSegundo.includes("x")) {
+  console.log("Hola patricio!!!");
+} else {
+  console.log("No eres patricio!!");
+}
+
+let numerosPrimos = [1, 3, 5, 7];
+
+let alCuadrado = numerosPrimos.map((numero) => {
+  return numero ** 3;
+});
+
+console.log(alCuadrado);
+
+// numero1 ** numero2 - significa , que el numero1 estara elevado a la potencia(numero2), por ejmplo 2 al cuadrado seria algo asi : 2**2
+
+// la diferencia , entre for-each y map, esq map si retorna/devuelve algo , for each , solo recorre, mas no devuelve
